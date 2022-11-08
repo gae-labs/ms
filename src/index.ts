@@ -101,13 +101,13 @@ function parse(str: string): number {
 
   let l_TotalMS = 0;
 
-  l_TotalMS += parseFloat(l_Groups.yearsValue) * y
-  l_TotalMS += parseFloat(l_Groups.weeksValue) * w
-  l_TotalMS += parseFloat(l_Groups.daysValue) * d
-  l_TotalMS += parseFloat(l_Groups.hoursValue) * h
-  l_TotalMS += parseFloat(l_Groups.minsValue) * m
-  l_TotalMS += parseFloat(l_Groups.secsValue) * s
-  l_TotalMS += parseFloat(l_Groups.msecsValue)
+  l_TotalMS += parseFloat(l_Groups.yearsValue ? l_Groups.yearsValue : `0`) * y
+  l_TotalMS += parseFloat(l_Groups.weeksValue ? l_Groups.weeksValue : `0`) * w
+  l_TotalMS += parseFloat(l_Groups.daysValue ? l_Groups.daysValue : `0`) * d
+  l_TotalMS += parseFloat(l_Groups.hoursValue ? l_Groups.hoursValue : `0`) * h
+  l_TotalMS += parseFloat(l_Groups.minsValue ? l_Groups.minsValue : `0`) * m
+  l_TotalMS += parseFloat(l_Groups.secsValue ? l_Groups.secsValue : `0`) * s
+  l_TotalMS += parseFloat(l_Groups.msecsValue ? l_Groups.msecsValue : `0`)
 
   return l_TotalMS;
 
