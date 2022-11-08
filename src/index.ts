@@ -86,66 +86,31 @@ function msFn(value: StringValue | number, options?: Options): number | string {
  * parsed
  */
 function parse(str: string): number {
-  if (str.length > 100) {
-    throw new Error('Value exceeds the maximum length of 100 characters.');
-  }
-  const match =
-    /^(?<value>-?(?:\d+)?\.?\d+) *(?<type>milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
-      str,
-    );
-  // Named capture groups need to be manually typed today.
-  // https://github.com/microsoft/TypeScript/issues/32098
-  const groups = match?.groups as { value: string; type?: string } | undefined;
-  if (!groups) {
+
+  const l_Regex = /^(?<years>(?<yearsValue>\d+)(?<yearsType>years?|yrs?|y))?\s?(?<weeks>(?<weeksValue>\d+)(?<weeksType>weeks?|w))?\s?(?<days>(?<daysValue>\d+)(?<daysType>days?|d))?\s?(?<hours>(?<hoursValue>\d+)(?<hoursType>hours?|hrs?|h))?\s?(?<mins>(?<minsValue>\d+)(?<minsType>minutes?|mins?|m))?\s?(?<secs>(?<secsValue>\d+)(?<secsType>seconds?|secs?|s))?\s?(?<msecs>(?<msecsValue>\d+)(?<msecsType>milliseconds?|msecs?|ms))?/gmi
+
+  const l_Match = l_Regex.exec(
+    str,
+  );
+
+  const l_Groups = l_Match?.groups as { yearsValue?: string; weeksValue?: string; daysValue?: string; hoursValue?: string; minsValue?: string; secsValue?: string; msecsValue?: string; } | undefined;
+
+  if (!l_Groups) {
     return NaN;
   }
-  const n = parseFloat(groups.value);
-  const type = (groups.type || 'ms').toLowerCase() as Lowercase<Unit>;
-  switch (type) {
-    case 'years':
-    case 'year':
-    case 'yrs':
-    case 'yr':
-    case 'y':
-      return n * y;
-    case 'weeks':
-    case 'week':
-    case 'w':
-      return n * w;
-    case 'days':
-    case 'day':
-    case 'd':
-      return n * d;
-    case 'hours':
-    case 'hour':
-    case 'hrs':
-    case 'hr':
-    case 'h':
-      return n * h;
-    case 'minutes':
-    case 'minute':
-    case 'mins':
-    case 'min':
-    case 'm':
-      return n * m;
-    case 'seconds':
-    case 'second':
-    case 'secs':
-    case 'sec':
-    case 's':
-      return n * s;
-    case 'milliseconds':
-    case 'millisecond':
-    case 'msecs':
-    case 'msec':
-    case 'ms':
-      return n;
-    default:
-      // This should never occur.
-      throw new Error(
-        `The unit ${type as string} was matched, but no matching case exists.`,
-      );
-  }
+
+  let l_TotalMS = 0;
+
+  l_TotalMS += parseFloat(l_Groups.yearsValue) * y
+  l_TotalMS += parseFloat(l_Groups.weeksValue) * w
+  l_TotalMS += parseFloat(l_Groups.daysValue) * d
+  l_TotalMS += parseFloat(l_Groups.hoursValue) * h
+  l_TotalMS += parseFloat(l_Groups.minsValue) * m
+  l_TotalMS += parseFloat(l_Groups.secsValue) * s
+  l_TotalMS += parseFloat(l_Groups.msecsValue)
+
+  return l_TotalMS;
+
 }
 
 // eslint-disable-next-line import/no-default-export
