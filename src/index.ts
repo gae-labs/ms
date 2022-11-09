@@ -88,7 +88,7 @@ function msFn(value: StringValue | number, options?: Options): number | string {
 function parse(str: string): number {
 
   const l_Regex =
-    /^((?<yearsValue>-?(\d*)?(\.\d+)?)(\s+)?(>years?|yrs?|y))?(\s+)?((?<weeksValue>-?(\d*)?(\.\d+)?)(\s+)?(weeks?|w))?(\s+)?((?<daysValue>-?(\d*)?(\.\d+)?)(\s+)?(days?|d))?(\s+)?((?<hoursValue>-?(\d*)?(\.\d+)?)(\s+)?(hours?|hrs?|h))?(\s+)?((?<minsValue>-?(\d*)?(\.\d+)?)(\s+)?(minutes?|mins?|m(?!s|i)))?(\s+)?((?<secsValue>-?(\d*)?(\.\d+)?)(\s+)?(seconds?|secs?|s))?(\s+)?((?<msecsValue>-?(\d*)?(\.\d+)?)(\s+)?(milliseconds?|msecs?|ms|$))?/gim;
+    /^((?<yearsValue>-?(\d*)?(\.\d+)?)(\s+)?(years?|yrs?|y))?(\s+)?((?<weeksValue>-?(\d*)?(\.\d+)?)(\s+)?(weeks?|w))?(\s+)?((?<daysValue>-?(\d*)?(\.\d+)?)(\s+)?(days?|d))?(\s+)?((?<hoursValue>-?(\d*)?(\.\d+)?)(\s+)?(hours?|hrs?|h))?(\s+)?((?<minsValue>-?(\d*)?(\.\d+)?)(\s+)?(minutes?|mins?|m(?!s|i)))?(\s+)?((?<secsValue>-?(\d*)?(\.\d+)?)(\s+)?(seconds?|secs?|s))?(\s+)?((?<msecsValue>-?(\d*)?(\.\d+)?)(\s+)?(milliseconds?|msecs?|ms|$))?/gim;
 
   const l_Match = l_Regex.exec(
     str,
@@ -96,19 +96,18 @@ function parse(str: string): number {
 
   const l_Groups = l_Match?.groups as { yearsValue?: string; weeksValue?: string; daysValue?: string; hoursValue?: string; minsValue?: string; secsValue?: string; msecsValue?: string; } | undefined;
 
-  if (!l_Groups || l_Groups.yearsValue == undefined && l_Groups.weeksValue == undefined && l_Groups.daysValue == undefined && l_Groups.hoursValue == undefined && l_Groups.minsValue == undefined && l_Groups.secsValue == undefined && l_Groups.msecsValue == undefined) {
+  if (!l_Groups || l_Groups.yearsValue == undefined && l_Groups.weeksValue == undefined && l_Groups.daysValue == undefined && l_Groups.hoursValue == undefined && l_Groups.minsValue == undefined && l_Groups.secsValue == undefined && l_Groups.msecsValue == undefined)
     return NaN;
-  }
 
   let l_TotalMS = 0;
 
-  l_TotalMS += parseFloat((l_Groups.yearsValue != undefined) ? l_Groups.yearsValue : `0`) * y;
-  l_TotalMS += parseFloat((l_Groups.weeksValue != undefined) ? l_Groups.weeksValue : `0`) * w;
-  l_TotalMS += parseFloat((l_Groups.daysValue != undefined) ? l_Groups.daysValue : `0`) * d;
-  l_TotalMS += parseFloat((l_Groups.hoursValue != undefined) ? l_Groups.hoursValue : `0`) * h;
-  l_TotalMS += parseFloat((l_Groups.minsValue != undefined) ? l_Groups.minsValue : `0`) * m;
-  l_TotalMS += parseFloat((l_Groups.secsValue != undefined) ? l_Groups.secsValue : `0`) * s;
-  l_TotalMS += parseFloat((l_Groups.msecsValue != undefined) ? l_Groups.msecsValue : `0`);
+  if (l_Groups.yearsValue != undefined) l_TotalMS += parseFloat(l_Groups.yearsValue) * y;
+  if (l_Groups.weeksValue != undefined) l_TotalMS += parseFloat(l_Groups.weeksValue) * w;
+  if (l_Groups.daysValue != undefined) l_TotalMS += parseFloat(l_Groups.daysValue) * d;
+  if (l_Groups.hoursValue != undefined) l_TotalMS += parseFloat(l_Groups.hoursValue) * h;
+  if (l_Groups.minsValue != undefined) l_TotalMS += parseFloat(l_Groups.minsValue) * m;
+  if (l_Groups.secsValue != undefined) l_TotalMS += parseFloat(l_Groups.secsValue) * s;
+  if (l_Groups.msecsValue != undefined) l_TotalMS += parseFloat(l_Groups.msecsValue);
 
   return l_TotalMS;
 }
