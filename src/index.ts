@@ -87,7 +87,8 @@ function msFn(value: StringValue | number, options?: Options): number | string {
  */
 function parse(str: string): number {
 
-  const l_Regex = /^(?<years>(?<yearsValue>\d+)(?<yearsType>years?|yrs?|y))?\s?(?<weeks>(?<weeksValue>\d+)(?<weeksType>weeks?|w))?\s?(?<days>(?<daysValue>\d+)(?<daysType>days?|d))?\s?(?<hours>(?<hoursValue>\d+)(?<hoursType>hours?|hrs?|h))?\s?(?<mins>(?<minsValue>\d+)(?<minsType>minutes?|mins?|m))?\s?(?<secs>(?<secsValue>\d+)(?<secsType>seconds?|secs?|s))?\s?(?<msecs>(?<msecsValue>\d+)(?<msecsType>milliseconds?|msecs?|ms))?/gmi
+  const l_Regex =
+    /^(?<years>(?<yearsValue>-?([0-9]\d*)?(\.\d+)?)(\s+)?(?<yearsType>years?|yrs?|y))?(\s+)?(?<weeks>(?<weeksValue>-?([0-9]\d*)?(\.\d+)?)(\s+)?(?<weeksType>weeks?|w))?(\s+)?(?<days>(?<daysValue>-?([0-9]\d*)?(\.\d+)?)(\s+)?(?<daysType>days?|d))?(\s+)?(?<hours>(?<hoursValue>-?([0-9]\d*)?(\.\d+)?)(\s+)?(?<hoursType>hours?|hrs?|h))?(\s+)?(?<mins>(?<minsValue>-?([0-9]\d*)?(\.\d+)?)(\s+)?(?<minsType>minutes?|mins?|m(?!s|i)))?(\s+)?(?<secs>(?<secsValue>-?([0-9]\d*)?(\.\d+)?)(\s+)?(?<secsType>seconds?|secs?|s))?(\s+)?(?<msecs>(?<msecsValue>-?([0-9]\d*)?(\.\d+)?)(\s+)?(?<msecsType>milliseconds?|msecs?|ms|$))?/gmi
 
   const l_Match = l_Regex.exec(
     str,
@@ -99,15 +100,19 @@ function parse(str: string): number {
     return NaN;
   }
 
+  if (l_Groups.yearsValue == undefined && l_Groups.weeksValue == undefined && l_Groups.daysValue == undefined && l_Groups.hoursValue == undefined && l_Groups.minsValue == undefined && l_Groups.secsValue == undefined && l_Groups.msecsValue == undefined) {
+    return NaN;
+  }
+
   let l_TotalMS = 0;
 
-  l_TotalMS += parseFloat(l_Groups.yearsValue ? l_Groups.yearsValue : `0`) * y
-  l_TotalMS += parseFloat(l_Groups.weeksValue ? l_Groups.weeksValue : `0`) * w
-  l_TotalMS += parseFloat(l_Groups.daysValue ? l_Groups.daysValue : `0`) * d
-  l_TotalMS += parseFloat(l_Groups.hoursValue ? l_Groups.hoursValue : `0`) * h
-  l_TotalMS += parseFloat(l_Groups.minsValue ? l_Groups.minsValue : `0`) * m
-  l_TotalMS += parseFloat(l_Groups.secsValue ? l_Groups.secsValue : `0`) * s
-  l_TotalMS += parseFloat(l_Groups.msecsValue ? l_Groups.msecsValue : `0`)
+  l_TotalMS += parseFloat((l_Groups.yearsValue != undefined) ? l_Groups.yearsValue : `0`) * y
+  l_TotalMS += parseFloat((l_Groups.weeksValue != undefined) ? l_Groups.weeksValue : `0`) * w
+  l_TotalMS += parseFloat((l_Groups.daysValue != undefined) ? l_Groups.daysValue : `0`) * d
+  l_TotalMS += parseFloat((l_Groups.hoursValue != undefined) ? l_Groups.hoursValue : `0`) * h
+  l_TotalMS += parseFloat((l_Groups.minsValue != undefined) ? l_Groups.minsValue : `0`) * m
+  l_TotalMS += parseFloat((l_Groups.secsValue != undefined) ? l_Groups.secsValue : `0`) * s
+  l_TotalMS += parseFloat((l_Groups.msecsValue != undefined) ? l_Groups.msecsValue : `0`)
 
   return l_TotalMS;
 
