@@ -64,6 +64,10 @@ describe('ms(string)', () => {
     expect(ms('.5ms')).toBe(0.5);
   });
 
+  it('should work with numbers ending with .', () => {
+    expect(ms('5.ms')).toBe(5);
+  });
+
   it('should work with negative integers', () => {
     expect(ms('-100ms')).toBe(-100);
   });
