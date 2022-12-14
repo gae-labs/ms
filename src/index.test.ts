@@ -48,11 +48,8 @@ describe('ms(string)', () => {
   });
 
   it('should return NaN if invalid', () => {
-    // @ts-expect-error - We expect this to fail.
     expect(isNaN(ms('☃'))).toBe(true);
-    // @ts-expect-error - We expect this to fail.
     expect(isNaN(ms('10-.5'))).toBe(true);
-    // @ts-expect-error - We expect this to fail.
     expect(isNaN(ms('ms'))).toBe(true);
   });
 
@@ -62,6 +59,10 @@ describe('ms(string)', () => {
 
   it('should work with numbers starting with .', () => {
     expect(ms('.5ms')).toBe(0.5);
+  });
+
+  it('should work with numbers ending with .', () => {
+    expect(ms('5.ms')).toBe(5);
   });
 
   it('should work with negative integers', () => {
@@ -257,7 +258,6 @@ describe('ms(number)', () => {
 describe('ms(invalid inputs)', () => {
   it('should throw an error, when ms("")', () => {
     expect(() => {
-      // @ts-expect-error - We expect this to throw.
       ms('');
     }).toThrowError();
   });
