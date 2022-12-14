@@ -42,9 +42,9 @@ type Unit =
 type UnitAnyCase = Unit | Uppercase<Unit> | Lowercase<Unit>;
 
 export type StringValue =
-  | `${number}`
-  | `${number}${UnitAnyCase}`
-  | `${number} ${UnitAnyCase}`;
+  | `${string}`
+  | `${string}${UnitAnyCase}`
+  | `${string} ${UnitAnyCase}`;
 
 interface Options {
   /**
